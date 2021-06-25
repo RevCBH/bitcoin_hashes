@@ -72,7 +72,7 @@ impl HashTrait for Hash {
         }
     }
 
-    const DISPLAY_BACKWARD: bool = true;
+    const DISPLAY_BACKWARD: bool = false;
 
     fn into_inner(self) -> Self::Inner {
         self.0
@@ -113,7 +113,7 @@ input: &'static str,
                     0x03, 0x81, 0x53, 0x45, 0x45, 0xf5, 0x5c, 0xf4,
                     0x3e, 0x41, 0x98, 0x3f, 0x5d, 0x4c, 0x94, 0x56,
                 ],
-                output_str: "56944c5d3f98413ef45cf54545538103cc9f298e0575820ad3591376e2e0f65d",
+                output_str: "5df6e0e2761359d30a8275058e299fcc0381534545f55cf43e41983f5d4c9456",
             },
         ];
 
@@ -149,7 +149,7 @@ input: &'static str,
 
         let hash = sha256d::Hash::from_slice(&HASH_BYTES).expect("right number of bytes");
         assert_tokens(&hash.compact(), &[Token::BorrowedBytes(&HASH_BYTES[..])]);
-        assert_tokens(&hash.readable(), &[Token::Str("6cfb35868c4465b7c289d7d5641563aa973db6a929655282a7bf95c8257f53ef")]);
+        assert_tokens(&hash.readable(), &[Token::Str("ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c")]);
     }
 }
 

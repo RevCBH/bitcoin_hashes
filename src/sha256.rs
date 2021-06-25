@@ -178,7 +178,7 @@ impl Midstate {
     /// Flag indicating whether user-visible serializations of this hash
     /// should be backward. For some reason Satoshi decided this should be
     /// true for `Sha256dHash`, so here we are.
-    const DISPLAY_BACKWARD: bool = true;
+    const DISPLAY_BACKWARD: bool = false;
 
     /// Construct a new midstate from the inner value.
     pub fn from_inner(inner: [u8; 32]) -> Self {
@@ -208,7 +208,7 @@ impl hex::FromHex for Midstate {
             ExactSizeIterator +
             DoubleEndedIterator,
     {
-        // DISPLAY_BACKWARD is true
+        // DISPLAY_BACKWARD is false
         Ok(Midstate::from_inner(hex::FromHex::from_byte_iter(iter.rev())?))
     }
 }

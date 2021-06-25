@@ -22,7 +22,7 @@ use std::{error, io};
 #[cfg(not(feature = "std"))]
 use core2::{error, io};
 
-use {hex, sha1, sha256, sha512, ripemd160, siphash24};
+use {hex, sha1, sha256, sha512, ripemd160, siphash24, blake2b};
 use HashEngine;
 use Error;
 
@@ -85,11 +85,20 @@ impl io::Write for siphash24::HashEngine {
     }
 }
 
+impl io::Write for blake2b::HashEngine {
+    fn flush(&mut self) -> io::Result<()> { Ok(()) }
+
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        self.input(buf);
+        Ok(buf.len())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::io::Write;
 
-    use {sha1, sha256, sha256d, sha512, ripemd160, hash160, siphash24};
+    use {sha1, sha256, sha256d, sha512, ripemd160, hash160, siphash24, blake2b};
     use Hash;
 
     macro_rules! write_test {
@@ -136,9 +145,9 @@ mod tests {
 
     write_test!(
         sha256d,
-        "56944c5d3f98413ef45cf54545538103cc9f298e0575820ad3591376e2e0f65d",
-        "374000d830c75d10d9417e493a7652920f30efbd300e3fb092f24c28c20baf64",
-        "0050d4148ad7a0437ca0643fad5bf4614cd95d9ba21fde52370b37dcc3f03307",
+        "5df6e0e2761359d30a8275058e299fcc0381534545f55cf43e41983f5d4c9456",
+        "64af0bc2284cf292b03f0e30bdef300f9252763a497e41d9105dc730d8004037",
+        "0733f0c3dc370b3752de1fa29b5dd94c61f45bad3f64a07c43a0d78a14d45000",
     );
 
     write_test!(
@@ -170,5 +179,12 @@ mod tests {
         "d70077739d4b921e",
         "3a3ccefde9b5b1e3",
         "ce456e4e4ecbc5bf",
+    );
+
+    write_test!(
+        blake2b,
+        "0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8",
+        "feb016c28375e7a92909827ab94ef89d0e8c8bd6d989054d4d5f0c2048c6ec47",
+        "04377ffc3310d8fa07fcbcb9c51c359d52645aa827e5749cd1d32598c7cf1eb2",
     );
 }

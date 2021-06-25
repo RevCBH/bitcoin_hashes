@@ -43,6 +43,7 @@
 #[cfg(all(not(feature = "alloc"), feature = "std"))] use std as alloc;
 #[cfg(feature="serde")] pub extern crate serde;
 #[cfg(all(test,feature="serde"))] extern crate serde_test;
+extern crate blake2;
 
 #[doc(hidden)]
 pub mod _export {
@@ -69,6 +70,7 @@ pub mod sha256t;
 pub mod siphash24;
 pub mod sha512;
 pub mod cmp;
+pub mod blake2b;
 
 use core::{borrow, fmt, hash, ops};
 
