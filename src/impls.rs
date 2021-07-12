@@ -26,6 +26,8 @@ use {hex, sha1, sha256, sha512, ripemd160, siphash24, blake2b};
 use HashEngine;
 use Error;
 
+use crate::blake2b160;
+
 impl error::Error for Error {
     #[cfg(feature = "std")]
     fn cause(&self) -> Option<&error::Error> { None }
@@ -86,6 +88,15 @@ impl io::Write for siphash24::HashEngine {
 }
 
 impl io::Write for blake2b::HashEngine {
+    fn flush(&mut self) -> io::Result<()> { Ok(()) }
+
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        self.input(buf);
+        Ok(buf.len())
+    }
+}
+
+impl io::Write for blake2b160::HashEngine {
     fn flush(&mut self) -> io::Result<()> { Ok(()) }
 
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {

@@ -71,6 +71,7 @@ pub mod siphash24;
 pub mod sha512;
 pub mod cmp;
 pub mod blake2b;
+pub mod blake2b160;
 
 use core::{borrow, fmt, hash, ops};
 
